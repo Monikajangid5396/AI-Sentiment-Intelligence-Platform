@@ -58,6 +58,31 @@ def sentiment_score(text):
 
     return TextBlob(text).sentiment.polarity
 
+def get_video_id(url):
+    parsed = urlparse(url)
+
+    # https://youtu.be/VIDEO_ID
+    if parsed.hostname == "youtu.be":
+        return parsed.path.lstrip("/")
+
+    # https://www.youtube.com/watch?v=VIDEO_ID
+    if parsed.hostname in ("www.youtube.com", "youtube.com", "m.youtube.com"):
+
+        if parsed.path == "/watch":
+            qs = parse_qs(parsed.query)
+            if "v" in qs:
+                return qs["v"][0]
+
+        # https://youtube.com/shorts/VIDEO_ID
+        if parsed.path.startswith("/shorts/"):
+            return parsed.path.split("/")[2]
+
+        # https://youtube.com/embed/VIDEO_ID
+        if parsed.path.startswith("/embed/"):
+            return parsed.path.split("/")[2]
+
+    raise ValueError("Invalid YouTube URL")
+
 
 # =====================================
 # HEADER
@@ -96,9 +121,7 @@ if analyze_btn:
 
         try:
 
-            video_id = parse_qs(
-                urlparse(video_url).query
-            )["v"][0]
+            video_id = get_video_id(video_url)
 
             st.success(
                 f"Video ID: {video_id}"
