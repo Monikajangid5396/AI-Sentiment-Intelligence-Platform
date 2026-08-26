@@ -56,10 +56,11 @@ def render_back_next():
   names = [n for n, _ in NAV_ITEMS]
   idx = names.index(st.session_state.page)
 
-  st.markdown("<div style='height:24px;'></div>", unsafe_allow_html=True)
+  st.markdown("<div style='height:32px;'></div>", unsafe_allow_html=True)
   st.markdown(
-      "<hr style='border-color: rgba(255,255,255,0.06); margin-bottom: 24px;'"
-      " />",
+      "<hr style='border: none; height: 1px; background: linear-gradient(90deg,"
+      " transparent, rgba(255,255,255,0.12), transparent); margin-bottom:"
+      " 28px;' />",
       unsafe_allow_html=True,
   )
 
@@ -100,7 +101,7 @@ def render_back_next():
 
 
 # =====================================
-# ENTERPRISE GLASSMORPHISM CSS
+# ENTERPRISE GLASSMORPHISM & SHADOW CSS
 # =====================================
 
 st.markdown(
@@ -114,7 +115,8 @@ html, body, [class*="css"] {
 
 /* Background gradient */
 .stApp {
-    background: radial-gradient(circle at top right, #111827, #080c14);
+    background: radial-gradient(circle at 15% 15%, #0f172a 0%, #090d16 50%, #030712 100%) !important;
+    background-attachment: fixed !important;
 }
 
 /* Hide Streamlit default chrome */
@@ -126,24 +128,26 @@ div[data-testid="stToolbar"], div[data-testid="stDecoration"],
 
 /* Main Container Padding */
 .block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-    max-width: 1280px;
+    padding-top: 2.5rem;
+    padding-bottom: 3.5rem;
+    max-width: 1320px;
 }
 
 /* Topbar Header */
 .topbar .eyebrow {
-    color: #6366f1;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    color: #818cf8;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .topbar h1 {
-    color: #f8fafc;
-    font-size: 30px;
+    background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 32px;
     font-weight: 800;
     letter-spacing: -0.02em;
     margin: 0;
@@ -152,116 +156,112 @@ div[data-testid="stToolbar"], div[data-testid="stDecoration"],
 .topbar .desc {
     color: #94a3b8;
     font-size: 14px;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 /* Section Heading */
 .section-heading {
-    color: #f1f5f9;
+    color: #f8fafc;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 32px 0 16px 0;
+    letter-spacing: 0.1em;
+    margin: 36px 0 18px 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .section-heading .bar {
     width: 4px;
-    height: 16px;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #6366f1, #a855f7);
+    height: 18px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #6366f1 0%, #a855f7 100%);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
     display: inline-block;
 }
 
-/* Glassmorphic Cards */
+/* Premium Glassmorphic Cards */
 div[data-testid="stVerticalBlockBorderWrapper"] {
-    background: rgba(15, 23, 42, 0.65) !important;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.65) 100%) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(12px);
-    border-radius: 16px !important;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"]:hover {
-    border-color: rgba(99, 102, 241, 0.35) !important;
-    box-shadow: 0 8px 25px -4px rgba(99, 102, 241, 0.15) !important;
+    transform: translateY(-4px);
+    border-color: rgba(129, 140, 248, 0.4) !important;
+    box-shadow: 0 20px 35px -10px rgba(99, 102, 241, 0.22), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
 /* KPI Components */
+.kpi-card {
+    position: relative;
+    overflow: hidden;
+}
+
 .kpi-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    margin-bottom: 12px;
+    font-size: 22px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    box-shadow: inset 0 0 12px rgba(99, 102, 241, 0.15);
+    margin-bottom: 14px;
 }
 
 .kpi-label {
     color: #64748b;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
 }
 
 .kpi-value {
     color: #f8fafc;
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 4px 0 6px 0;
+    letter-spacing: -0.03em;
+    margin: 4px 0 8px 0;
 }
 
 .kpi-delta {
     display: inline-flex;
     align-items: center;
-    color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.25);
     border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
-    padding: 2px 8px;
+    padding: 3px 10px;
 }
 
-/* Feature Checklists */
+/* Feature Cards & Checklists */
 .card-title {
     color: #f8fafc;
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 800;
     margin-bottom: 4px;
+    letter-spacing: -0.01em;
 }
 
 .card-sub {
-    color: #64748b;
+    color: #94a3b8;
     font-size: 13px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .feature-line {
-    color: #cbd5e1;
-    font-size: 13.5px;
-    margin: 8px 0;
-    display: flex;
-    align-items: center;
-}
-
-.feature-line .tick {
-    color: #10b981;
-    font-weight: 800;
-    margin-right: 10px;
-}
-
-.roadmap-line {
     color: #cbd5e1;
     font-size: 13.5px;
     margin: 10px 0;
@@ -269,76 +269,111 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     align-items: center;
 }
 
+.feature-line .tick {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    margin-right: 12px;
+}
+
+.roadmap-line {
+    color: #cbd5e1;
+    font-size: 13.5px;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+}
+
 .roadmap-badge {
     display: inline-block;
-    background: rgba(245, 158, 11, 0.12);
-    color: #f59e0b;
-    border: 1px solid rgba(245, 158, 11, 0.25);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.1) 100%);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
     border-radius: 6px;
     font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
-    margin-right: 10px;
-    letter-spacing: 0.04em;
+    font-weight: 800;
+    padding: 3px 8px;
+    margin-right: 12px;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
-/* Buttons */
+/* Sleek Buttons */
 .stButton button {
-    border-radius: 10px !important;
-    font-weight: 600 !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
     font-size: 13.5px !important;
-    padding: 8px 16px !important;
-    transition: all 0.2s ease !important;
+    padding: 10px 18px !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .stButton button[kind="primary"] {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
     border: none !important;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4) !important;
+    color: #ffffff !important;
 }
 
 .stButton button[kind="primary"]:hover {
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5) !important;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
     transform: translateY(-1px);
+}
+
+.stButton button[kind="secondary"] {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+.stButton button[kind="secondary"]:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
 }
 
 /* Sidebar Styling */
 section[data-testid="stSidebar"] {
-    background: #090d16 !important;
+    background: #070b14 !important;
     border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
 .sidebar-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px 0 24px 0;
+    gap: 14px;
+    padding: 10px 0 26px 0;
 }
 
 .sidebar-brand .logo-badge {
-    background: linear-gradient(135deg, #6366f1, #a855f7);
-    width: 40px;
-    height: 40px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    width: 42px;
+    height: 42px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
 }
 
 .sidebar-brand .brand-text {
     color: #f8fafc;
     font-weight: 800;
-    font-size: 16px;
+    font-size: 17px;
     letter-spacing: -0.01em;
 }
 
 .sidebar-brand .brand-sub {
     color: #64748b;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 section[data-testid="stSidebar"] .stButton button {
@@ -351,23 +386,24 @@ section[data-testid="stSidebar"] .stButton button {
 }
 
 section[data-testid="stSidebar"] .stButton button:hover {
-    background: rgba(255, 255, 255, 0.04) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     color: #f8fafc !important;
 }
 
 section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-    background: rgba(99, 102, 241, 0.15) !important;
-    color: #818cf8 !important;
-    border: 1px solid rgba(99, 102, 241, 0.3) !important;
-    box-shadow: none !important;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.1) 100%) !important;
+    color: #a5b4fc !important;
+    border: 1px solid rgba(99, 102, 241, 0.35) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Profile Section Sidebar */
 .profile-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
     padding: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .profile-card .p-name {
@@ -384,13 +420,13 @@ section[data-testid="stSidebar"] .stButton button[kind="primary"] {
 
 .plan-badge {
     display: inline-block;
-    background: rgba(16, 185, 129, 0.12);
-    color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.3);
     border-radius: 20px;
     font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
+    font-weight: 800;
+    padding: 2px 9px;
     margin-top: 4px;
 }
 
@@ -400,44 +436,46 @@ section[data-testid="stSidebar"] .stButton button[kind="primary"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-weight: 800;
     color: white;
     flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
 }
 
 /* Profile Banner Main */
 .profile-banner {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.06));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 28px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    padding: 30px;
     display: flex;
     align-items: center;
-    gap: 24px;
-    margin-bottom: 24px;
+    gap: 26px;
+    margin-bottom: 28px;
+    box-shadow: 0 10px 30px -5px rgba(0,0,0,0.3);
 }
 
 .profile-banner .p-name {
     color: #f8fafc;
     font-weight: 800;
-    font-size: 22px;
+    font-size: 24px;
     margin-bottom: 4px;
 }
 
 .profile-banner .p-tag {
     color: #94a3b8;
     font-size: 14px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .skills-pill {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: #cbd5e1;
     font-size: 12px;
-    font-weight: 600;
-    padding: 4px 12px;
+    font-weight: 700;
+    padding: 5px 14px;
     border-radius: 20px;
     margin: 4px 6px 4px 0;
 }
@@ -458,7 +496,8 @@ def avatar_html(size=64, font_size=24):
     return (
         f'<img src="data:image/png;base64,{u["avatar_b64"]}" '
         f'style="width:{size}px;height:{size}px;border-radius:50%;object-fit:cover;'
-        'flex-shrink:0;box-shadow:0 4px 14px rgba(99,102,241,0.35);" />'
+        'flex-shrink:0;box-shadow:0 6px 18px rgba(99,102,241,0.45);'
+        ' border: 2px solid rgba(255,255,255,0.15);" />'
     )
   initial = u["name"].strip()[0].upper() if u.get("name") else "U"
   return (
@@ -474,9 +513,9 @@ def avatar_html(size=64, font_size=24):
 if not st.session_state.authenticated:
   st.markdown(
       """
-        <div style="text-align:center; padding: 60px 0 20px 0;">
+        <div style="text-align:center; padding: 60px 0 24px 0;">
             <div class="topbar eyebrow" style="display:inline-block;">Enterprise Access</div>
-            <h1 style="color:#f8fafc; font-size:36px; font-weight:800; margin:8px 0 8px 0;">
+            <h1 style="color:#f8fafc; font-size:38px; font-weight:800; margin:10px 0;">
                 ⚡ AI Sentiment Intelligence Platform
             </h1>
             <div style="color:#94a3b8; font-size:15px;">
@@ -577,7 +616,8 @@ for name, icon in NAV_ITEMS:
       go_to(name)
 
 st.sidebar.markdown(
-    "<hr style='border-color: rgba(255,255,255,0.06); margin: 20px 0;' />",
+    "<hr style='border: none; height: 1px; background: linear-gradient(90deg,"
+    " transparent, rgba(255,255,255,0.08), transparent); margin: 20px 0;' />",
     unsafe_allow_html=True,
 )
 
@@ -585,7 +625,7 @@ _u = st.session_state.user
 st.sidebar.markdown(
     f"""
     <div class="profile-card" style="display:flex; align-items:center; gap:12px;">
-        {avatar_html(size=40, font_size=16)}
+        {avatar_html(size=42, font_size=16)}
         <div>
             <div class="p-name">{_u['name']}</div>
             <div class="p-row">{_u['role']}</div>
@@ -602,12 +642,13 @@ if st.sidebar.button("🚪  Log Out", use_container_width=True):
   st.rerun()
 
 st.sidebar.markdown(
-    "<hr style='border-color: rgba(255,255,255,0.06); margin: 20px 0;' />",
+    "<hr style='border: none; height: 1px; background: linear-gradient(90deg,"
+    " transparent, rgba(255,255,255,0.08), transparent); margin: 20px 0;' />",
     unsafe_allow_html=True,
 )
 st.sidebar.markdown(
-    '<div style="color:#475569; font-size:11px; text-align:center;">AI Sentiment'
-    " Intelligence v1.0</div>",
+    '<div style="color:#475569; font-size:11px; text-align:center; font-weight:'
+    ' 600;">AI Sentiment Intelligence v1.0</div>',
     unsafe_allow_html=True,
 )
 
@@ -631,11 +672,11 @@ if st.session_state.page == "Dashboard":
         unsafe_allow_html=True,
     )
   with top_r:
-    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:8px;'></div>", unsafe_allow_html=True)
     if st.button("🔄  Refresh Sync", use_container_width=True):
       st.toast("Platform data synchronized ✅")
     st.caption(
-        "<div style='text-align:right;color:#475569;font-size:11px;'>Updated"
+        "<div style='text-align:right;color:#64748b;font-size:11px;'>Updated"
         f" {datetime.now().strftime('%d %b, %I:%M %p')}</div>",
         unsafe_allow_html=True,
     )
@@ -658,10 +699,12 @@ if st.session_state.page == "Dashboard":
       with st.container(border=True):
         st.markdown(
             f"""
-                    <div class="kpi-icon">{icon}</div>
-                    <div class="kpi-label">{label}</div>
-                    <div class="kpi-value">{value}</div>
-                    <span class="kpi-delta">↑ {delta}</span>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">{icon}</div>
+                        <div class="kpi-label">{label}</div>
+                        <div class="kpi-value">{value}</div>
+                        <span class="kpi-delta">↑ {delta}</span>
+                    </div>
                     """,
             unsafe_allow_html=True,
         )
@@ -687,7 +730,7 @@ if st.session_state.page == "Dashboard":
           unsafe_allow_html=True,
       )
       st.markdown(
-          "<div style='height:12px;'></div>", unsafe_allow_html=True
+          "<div style='height:14px;'></div>", unsafe_allow_html=True
       )
       if st.button(
           "Launch YouTube Analyzer →",
@@ -710,7 +753,7 @@ if st.session_state.page == "Dashboard":
           unsafe_allow_html=True,
       )
       st.markdown(
-          "<div style='height:12px;'></div>", unsafe_allow_html=True
+          "<div style='height:14px;'></div>", unsafe_allow_html=True
       )
       if st.button(
           "Launch News Intelligence →",
@@ -752,6 +795,7 @@ if st.session_state.page == "Dashboard":
                 """,
           unsafe_allow_html=True,
       )
+      st.markdown("<div style='height:6px;'></div>", unsafe_allow_html=True)
       if st.button(
           "🔔 Subscribe to Feature Releases",
           key="notify_roadmap",
@@ -799,12 +843,12 @@ elif st.session_state.page == "Profile":
       " Profile</h1></div>",
       unsafe_allow_html=True,
   )
-  st.markdown("<div style='height:14px;'></div>", unsafe_allow_html=True)
+  st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
 
   st.markdown(
       f"""
         <div class="profile-banner">
-            {avatar_html(size=72, font_size=28)}
+            {avatar_html(size=76, font_size=30)}
             <div>
                 <div class="p-name">{u['name']}</div>
                 <div class="p-tag">{u['bio']}</div>
@@ -828,7 +872,7 @@ elif st.session_state.page == "Profile":
         st.markdown(
             f"""
                     <div class="kpi-icon">💳</div>
-                    <div class="card-title" style="font-size:14px;">Current Plan</div>
+                    <div class="card-title" style="font-size:15px;">Current Plan</div>
                     <div class="card-sub" style="margin-bottom:0;">{u['plan']} Tier · Renews monthly</div>
                     """,
             unsafe_allow_html=True,
@@ -839,7 +883,7 @@ elif st.session_state.page == "Profile":
         st.markdown(
             """
                     <div class="kpi-icon">📊</div>
-                    <div class="card-title" style="font-size:14px;">Usage Statistics</div>
+                    <div class="card-title" style="font-size:15px;">Usage Statistics</div>
                     <div class="card-sub" style="margin-bottom:0;">2,891 queries processed</div>
                     """,
             unsafe_allow_html=True,
@@ -850,7 +894,7 @@ elif st.session_state.page == "Profile":
         st.markdown(
             f"""
                     <div class="kpi-icon">✉️</div>
-                    <div class="card-title" style="font-size:14px;">Account Email</div>
+                    <div class="card-title" style="font-size:15px;">Account Email</div>
                     <div class="card-sub" style="margin-bottom:0;">{u['email']}</div>
                     """,
             unsafe_allow_html=True,
@@ -869,7 +913,7 @@ elif st.session_state.page == "Profile":
       st.markdown(
           f'<div style="color:#cbd5e1;'
           f' font-size:14px;">{u["bio"]}</div><div'
-          f' style="margin-top:14px;">{skills_html}</div>',
+          f' style="margin-top:16px;">{skills_html}</div>',
           unsafe_allow_html=True,
       )
 
@@ -904,8 +948,9 @@ elif st.session_state.page == "Profile":
           st.rerun()
 
     st.markdown(
-        "<hr style='border-color: rgba(255,255,255,0.06); margin:20px 0;'"
-        " />",
+        "<hr style='border: none; height: 1px; background:"
+        " linear-gradient(90deg, transparent, rgba(255,255,255,0.08),"
+        " transparent); margin:24px 0;' />",
         unsafe_allow_html=True,
     )
 
@@ -956,8 +1001,9 @@ elif st.session_state.page == "Profile":
           st.success("Password updated successfully.")
 
     st.markdown(
-        "<hr style='border-color: rgba(255,255,255,0.06); margin:20px 0;'"
-        " />",
+        "<hr style='border: none; height: 1px; background:"
+        " linear-gradient(90deg, transparent, rgba(255,255,255,0.08),"
+        " transparent); margin:24px 0;' />",
         unsafe_allow_html=True,
     )
     if st.button("🚪 Log Out of All Sessions"):
