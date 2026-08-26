@@ -25,17 +25,14 @@ st.set_page_config(
 
 load_dotenv()
 
-API_KEY = os.getenv(
-    "NEWS_API_KEY"
-)
+# Env variable ya Streamlit Secrets dono jagah check karega
+API_KEY = os.getenv("NEWS_API_KEY") or st.secrets.get("NEWS_API_KEY", "")
 
 # =====================================
 # HEADER
 # =====================================
 
-st.title(
-    "📰 AI News Sentiment Dashboard"
-)
+st.title("📰 AI News Sentiment Dashboard")
 
 st.markdown(
     """
@@ -53,9 +50,7 @@ topic = st.text_input(
     "Artificial Intelligence"
 )
 
-search_btn = st.button(
-    "Analyze News"
-)
+search_btn = st.button("Analyze News")
 
 # =====================================
 # MAIN LOGIC
@@ -63,9 +58,7 @@ search_btn = st.button(
 
 if search_btn:
 
-    with st.spinner(
-        "🔍 Fetching and Analyzing News..."
-    ):
+    with st.spinner("🔍 Fetching and Analyzing News..."):
 
         try:
 
@@ -79,120 +72,69 @@ if search_btn:
             )
 
             response = requests.get(url)
-
             data = response.json()
+
+            # SAFE CHECK: Handle API Errors gracefully
+            if response.status_code != 200:
+                st.error(f"NewsAPI Error ({response.status_code}): {data.get('message', 'Failed to fetch news.')}")
+                st.stop()
+
+            articles_data = data.get("articles")
+            if articles_data is None:
+                st.error(f"API Response Error: {data.get('message', 'No articles key found in response.')}")
+                st.stop()
 
             articles = []
 
-            for article in data["articles"]:
-
-                title = article.get(
-                    "title"
-                )
-
+            for article in articles_data:
+                title = article.get("title")
                 if title:
+                    articles.append(title)
 
-                    articles.append(
-                        title
-                    )
+            if not articles:
+                st.warning("No articles found for this topic.")
+                st.stop()
 
-            df = pd.DataFrame(
-                articles,
-                columns=["Headline"]
-            )
+            df = pd.DataFrame(articles, columns=["Headline"])
 
-            st.success(
-                f"Showing results for: {topic}"
-            )
+            st.success(f"Showing results for: {topic}")
 
             # =====================================
             # SENTIMENT ANALYSIS
             # =====================================
 
             def get_sentiment(text):
-
-                score = TextBlob(
-                    text
-                ).sentiment.polarity
-
+                score = TextBlob(text).sentiment.polarity
                 if score > 0:
                     return "Positive"
-
                 elif score < 0:
                     return "Negative"
-
                 else:
                     return "Neutral"
 
-            df["Sentiment"] = df[
-                "Headline"
-            ].apply(
-                get_sentiment
-            )
+            df["Sentiment"] = df["Headline"].apply(get_sentiment)
 
             # =====================================
             # KPI SECTION
             # =====================================
 
             total_news = len(df)
-
-            positive = len(
-                df[
-                    df["Sentiment"]
-                    == "Positive"
-                ]
-            )
-
-            neutral = len(
-                df[
-                    df["Sentiment"]
-                    == "Neutral"
-                ]
-            )
-
-            negative = len(
-                df[
-                    df["Sentiment"]
-                    == "Negative"
-                ]
-            )
+            positive = len(df[df["Sentiment"] == "Positive"])
+            neutral = len(df[df["Sentiment"] == "Neutral"])
+            negative = len(df[df["Sentiment"] == "Negative"])
 
             c1, c2, c3, c4 = st.columns(4)
-
-            c1.metric(
-                "📰 Total News",
-                total_news
-            )
-
-            c2.metric(
-                "😊 Positive",
-                positive
-            )
-
-            c3.metric(
-                "😐 Neutral",
-                neutral
-            )
-
-            c4.metric(
-                "😡 Negative",
-                negative
-            )
+            c1.metric("📰 Total News", total_news)
+            c2.metric("😊 Positive", positive)
+            c3.metric("😐 Neutral", neutral)
+            c4.metric("😡 Negative", negative)
 
             # =====================================
             # CHART DATA
             # =====================================
 
-            sentiment_counts = (
-                df["Sentiment"]
-                .value_counts()
-                .reset_index()
-            )
-
-            sentiment_counts.columns = [
-                "Sentiment",
-                "Count"
-            ]
+            sentiment_counts = df["Sentiment"].value_counts().reset_index()
+            sentiment_counts.columns = ["Sentiment", "Count"]
 
             # =====================================
             # PIE + BAR CHARTS
@@ -215,30 +157,17 @@ if search_btn:
             )
 
             with left:
-
-                st.plotly_chart(
-                    fig_pie,
-                    use_container_width=True
-                )
+                st.plotly_chart(fig_pie, use_container_width=True)
 
             with right:
-
-                st.plotly_chart(
-                    fig_bar,
-                    use_container_width=True
-                )
+                st.plotly_chart(fig_bar, use_container_width=True)
 
             # =====================================
             # WORD CLOUD
             # =====================================
 
-            st.subheader(
-                "☁️ Word Cloud"
-            )
-
-            text = " ".join(
-                df["Headline"]
-            )
+            st.subheader("☁️ Word Cloud")
+            text = " ".join(df["Headline"])
 
             wordcloud = WordCloud(
                 width=1200,
@@ -246,14 +175,9 @@ if search_btn:
                 background_color="white"
             ).generate(text)
 
-            fig_wc, ax = plt.subplots(
-                figsize=(12, 6)
-            )
-
+            fig_wc, ax = plt.subplots(figsize=(12, 6))
             ax.imshow(wordcloud)
-
             ax.axis("off")
-
             st.pyplot(fig_wc)
 
             # =====================================
@@ -263,30 +187,16 @@ if search_btn:
             col1, col2 = st.columns(2)
 
             with col1:
-
-                st.subheader(
-                    "😊 Top Positive News"
-                )
-
+                st.subheader("😊 Top Positive News")
                 st.dataframe(
-                    df[
-                        df["Sentiment"]
-                        == "Positive"
-                    ].head(10),
+                    df[df["Sentiment"] == "Positive"].head(10),
                     use_container_width=True
                 )
 
             with col2:
-
-                st.subheader(
-                    "😡 Top Negative News"
-                )
-
+                st.subheader("😡 Top Negative News")
                 st.dataframe(
-                    df[
-                        df["Sentiment"]
-                        == "Negative"
-                    ].head(10),
+                    df[df["Sentiment"] == "Negative"].head(10),
                     use_container_width=True
                 )
 
@@ -294,69 +204,27 @@ if search_btn:
             # AI INSIGHT
             # =====================================
 
-            st.subheader(
-                "🤖 AI Insight"
-            )
+            st.subheader("🤖 AI Insight")
 
             if positive > negative:
-
-                st.success(
-                    f"""
-Public sentiment around
-'{topic}'
-is mostly Positive.
-
-Positive News : {positive}
-Neutral News : {neutral}
-Negative News : {negative}
-"""
-                )
-
+                st.success(f"Public sentiment around '{topic}' is mostly Positive.\n\nPositive News : {positive}\nNeutral News : {neutral}\nNegative News : {negative}")
             elif negative > positive:
-
-                st.error(
-                    f"""
-Public sentiment around
-'{topic}'
-is mostly Negative.
-
-Positive News : {positive}
-Neutral News : {neutral}
-Negative News : {negative}
-"""
-                )
-
+                st.error(f"Public sentiment around '{topic}' is mostly Negative.\n\nPositive News : {positive}\nNeutral News : {neutral}\nNegative News : {negative}")
             else:
-
-                st.info(
-                    f"""
-Public sentiment around
-'{topic}'
-is Neutral.
-"""
-                )
+                st.info(f"Public sentiment around '{topic}' is Neutral.")
 
             # =====================================
             # FULL DATASET
             # =====================================
 
-            st.subheader(
-                "📰 Full News Dataset"
-            )
-
-            st.dataframe(
-                df,
-                use_container_width=True
-            )
+            st.subheader("📰 Full News Dataset")
+            st.dataframe(df, use_container_width=True)
 
             # =====================================
             # DOWNLOAD REPORT
             # =====================================
 
-            csv = df.to_csv(
-                index=False
-            )
-
+            csv = df.to_csv(index=False)
             st.download_button(
                 label="📥 Download Report",
                 data=csv,
@@ -365,7 +233,4 @@ is Neutral.
             )
 
         except Exception as e:
-
-            st.error(
-                f"Error: {e}"
-            )
+            st.error(f"Error: {e}")
